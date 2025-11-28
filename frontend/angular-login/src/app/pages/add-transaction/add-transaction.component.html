@@ -1,0 +1,39 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card p-3">
+        <h4>Add Transaction</h4>
+        <form (ngSubmit)="submit()">
+          <div class="mb-3">
+            <label>Type</label>
+            <select class="form-select" [(ngModel)]="type" name="type">
+              <option value="expense">Expense</option>
+              <option value="income">Income</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label>Category</label>
+            <select class="form-select" [(ngModel)]="category_id" name="category">
+              <option [ngValue]="null">-- none --</option>
+              <option *ngFor="let c of categories" [ngValue]="c.id">{{ c.name }} ({{ c.type }})</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label>Amount</label>
+            <input class="form-control" type="number" [(ngModel)]="amount" name="amount" required />
+          </div>
+
+          <div class="mb-3">
+            <label>Note</label>
+            <input class="form-control" type="text" [(ngModel)]="note" name="note" />
+          </div>
+
+          <button class="btn btn-primary" type="submit">Add</button>
+          <a routerLink="/dashboard" class="btn btn-link">Cancel</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
