@@ -1,0 +1,548 @@
+// transfer.component.scss
+.transfer-page {
+  min-height: 100vh;
+  background: #1a1d3a;
+  padding: 24px;
+
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
+}
+
+.transfer-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.transfer-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+
+  .back-btn {
+    background: #151832;
+    color: #fff;
+    border: 1px solid #1e2347;
+
+    &:hover {
+      background: #1e2347;
+    }
+  }
+
+  h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+
+    @media (max-width: 768px) {
+      font-size: 22px;
+    }
+  }
+}
+
+// Step Indicator
+.step-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32px;
+  padding: 0 20px;
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+
+    .step-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #1e2347;
+      border: 2px solid #334155;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #8b92b2;
+      font-weight: 600;
+      transition: all 0.3s;
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    .step-label {
+      font-size: 12px;
+      color: #8b92b2;
+    }
+
+    &.active {
+      .step-circle {
+        background: #6366f1;
+        border-color: #6366f1;
+        color: #fff;
+      }
+
+      .step-label {
+        color: #fff;
+      }
+    }
+
+    &.completed {
+      .step-circle {
+        background: #22d3ee;
+        border-color: #22d3ee;
+        color: #fff;
+      }
+    }
+  }
+
+  .step-line {
+    width: 100px;
+    height: 2px;
+    background: #334155;
+    margin: 0 16px 24px;
+    transition: all 0.3s;
+
+    &.active {
+      background: #22d3ee;
+    }
+
+    @media (max-width: 768px) {
+      width: 60px;
+    }
+  }
+}
+
+// Form Sections
+.form-section {
+  background: #151832 !important;
+  border: 1px solid #1e2347;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 16px;
+
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    margin: 0 0 20px 0;
+  }
+}
+
+.full-width {
+  width: 100%;
+
+  ::ng-deep {
+    .mat-mdc-text-field-wrapper {
+      background: #1a1d3a;
+    }
+
+    .mat-mdc-form-field-subscript-wrapper {
+      margin-top: 4px;
+    }
+
+    .mat-mdc-form-field-infix {
+      padding: 12px 14px;
+      min-height: auto;
+    }
+
+    .mat-mdc-input-element,
+    .mat-mdc-select-value {
+      color: #fff;
+    }
+
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: #334155;
+    }
+
+    .mat-mdc-form-field:hover .mdc-notched-outline__leading,
+    .mat-mdc-form-field:hover .mdc-notched-outline__notch,
+    .mat-mdc-form-field:hover .mdc-notched-outline__trailing {
+      border-color: #475569;
+    }
+
+    .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+    .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+    .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+      border-color: #6366f1;
+    }
+
+    .mat-mdc-form-field-error {
+      color: #ef4444;
+      font-size: 12px;
+    }
+  }
+}
+
+// Account Selection
+.account-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  .account-type {
+    font-weight: 500;
+    color: #fff;
+  }
+
+  .account-number {
+    font-size: 12px;
+    color: #8b92b2;
+  }
+
+  .account-balance {
+    font-weight: 600;
+    color: #22d3ee;
+  }
+}
+
+.selected-account {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #1a1d3a;
+  border-radius: 12px;
+  margin-top: 16px;
+
+  .account-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    mat-icon {
+      color: #6366f1;
+      font-size: 24px;
+    }
+
+    .account-name {
+      font-weight: 500;
+      color: #fff;
+    }
+
+    .account-num {
+      font-size: 12px;
+      color: #8b92b2;
+    }
+  }
+
+  .account-bal {
+    font-size: 18px;
+    font-weight: 600;
+    color: #22d3ee;
+  }
+}
+
+// Recent Recipients
+.recent-recipients {
+  margin-bottom: 24px;
+
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 16px;
+  }
+
+  .recipients-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 16px;
+
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .recipient-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px;
+    background: #151832;
+    border: 1px solid #1e2347;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:hover {
+      background: #1e2347;
+      border-color: #6366f1;
+    }
+
+    &.selected {
+      background: #1e2347;
+      border-color: #6366f1;
+    }
+
+    .recipient-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .recipient-name {
+      font-size: 12px;
+      color: #fff;
+      text-align: center;
+    }
+  }
+}
+
+// Transfer Type
+.transfer-type-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+
+  ::ng-deep {
+    .mat-mdc-radio-button {
+      .mdc-radio {
+        .mdc-radio__background {
+          .mdc-radio__outer-circle,
+          .mdc-radio__inner-circle {
+            border-color: #6366f1;
+          }
+        }
+
+        &.mdc-radio--checked .mdc-radio__background {
+          .mdc-radio__outer-circle {
+            border-color: #6366f1;
+          }
+
+          .mdc-radio__inner-circle {
+            border-color: #6366f1;
+          }
+        }
+      }
+
+      .mdc-label {
+        color: #fff;
+      }
+    }
+  }
+}
+
+// Beneficiary Options
+.beneficiary-option {
+  .beneficiary-name {
+    font-weight: 500;
+    color: #fff;
+  }
+
+  .beneficiary-details {
+    font-size: 12px;
+    color: #8b92b2;
+  }
+}
+
+// Amount Field
+.amount-field {
+  ::ng-deep {
+    .mat-mdc-input-element {
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .mat-mdc-form-field-text-prefix {
+      font-size: 24px;
+      font-weight: 600;
+      color: #fff;
+    }
+  }
+}
+
+// Fee Summary
+.fee-summary {
+  margin-top: 20px;
+  padding: 16px;
+  background: #1a1d3a;
+  border-radius: 12px;
+
+  .fee-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    color: #8b92b2;
+    font-size: 14px;
+
+    &.total {
+      margin-top: 8px;
+      padding-top: 12px;
+      border-top: 1px solid #334155;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+    }
+  }
+}
+
+// Confirmation Card
+.confirmation-card {
+  background: #151832 !important;
+  border: 1px solid #1e2347;
+  border-radius: 16px;
+  padding: 32px;
+
+  h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    margin: 0 0 24px 0;
+    text-align: center;
+  }
+}
+
+.summary-section {
+  margin-bottom: 24px;
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 12px 0;
+
+    .label {
+      color: #8b92b2;
+      font-size: 14px;
+    }
+
+    .value {
+      text-align: right;
+      color: #fff;
+      font-weight: 500;
+
+      .sub-value {
+        font-size: 12px;
+        color: #8b92b2;
+        font-weight: 400;
+      }
+    }
+
+    &.amount-row {
+      .value.amount {
+        font-size: 20px;
+        color: #22d3ee;
+        font-weight: 600;
+      }
+    }
+
+    &.total-row {
+      margin-top: 8px;
+      padding-top: 12px;
+      border-top: 1px solid #334155;
+
+      .label,
+      .value {
+        font-size: 18px;
+        font-weight: 600;
+        color: #fff;
+      }
+    }
+  }
+
+  .transfer-arrow {
+    text-align: center;
+    padding: 8px 0;
+
+    mat-icon {
+      color: #6366f1;
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  .summary-divider {
+    height: 1px;
+    background: #334155;
+    margin: 16px 0;
+  }
+}
+
+.pin-section {
+  margin-bottom: 24px;
+}
+
+// Action Buttons
+.action-buttons {
+  display: flex;
+  gap: 16px;
+  margin-top: 24px;
+
+  button {
+    flex: 1;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: 500;
+    font-size: 16px;
+  }
+
+  .cancel-btn,
+  .back-btn-action {
+    border: 1px solid #334155 !important;
+    color: #fff !important;
+    background: transparent !important;
+
+    &:hover {
+      background: #1e2347 !important;
+    }
+  }
+
+  .next-btn,
+  .confirm-btn {
+    background: #6366f1 !important;
+    color: #fff !important;
+
+    &:hover:not(:disabled) {
+      background: #7c3aed !important;
+    }
+
+    &:disabled {
+      background: #334155 !important;
+      color: #64748b !important;
+    }
+  }
+}
+
+// Global Material Overrides
+::ng-deep {
+  .mat-mdc-card {
+    background: #151832 !important;
+    color: #fff !important;
+  }
+
+  .mat-mdc-select-panel {
+    background: #151832;
+
+    .mat-mdc-option {
+      color: #fff;
+
+      &:hover {
+        background: #1e2347;
+      }
+
+      &.mat-mdc-option-active {
+        background: #1e2347;
+      }
+    }
+  }
+}

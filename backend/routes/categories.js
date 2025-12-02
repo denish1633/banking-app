@@ -7,10 +7,15 @@ const router = express.Router();
 // list categories for user
 router.get('/', auth, async (req, res) => {
   try {
-    const q = await db.query('SELECT id, name, type, created_at FROM categories WHERE user_id = $1 ORDER BY name', [req.user.id]);
+    console.log('Fetching categories for user:', req.user.id);
+    const q = await db.query(
+      'SELECT id, name, type, created_at FROM categories WHERE user_id = $1 ORDER BY name',
+      [req.user.id]
+    );
+    console.log('Categories fetched:', q.rows);
     res.json(q.rows);
   } catch (err) {
-    console.error(err);
+    console.error('Error fetching categories:', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -19,16 +24,26 @@ router.get('/', auth, async (req, res) => {
 router.post('/', auth, async (req, res) => {
   try {
     const { name, type } = req.body;
-    if (!name || !['income','expense'].includes(type)) return res.status(400).json({ message: 'Name and valid type required' });
+    console.log('Creating category:', { user: req.user.id, name, type });
+
+    if (!name || !['income', 'expense'].includes(type)) {
+      console.log('Invalid category data');
+      return res.status(400).json({ message: 'Name and valid type required' });
+    }
 
     const q = await db.query(
       'INSERT INTO categories (user_id, name, type) VALUES ($1, $2, $3) RETURNING id, name, type, created_at',
       [req.user.id, name, type]
     );
+
+    console.log('Category created:', q.rows[0]);
     res.status(201).json(q.rows[0]);
   } catch (err) {
-    if (err.code === '23505') return res.status(400).json({ message: 'Category already exists' });
-    console.error(err);
+    if (err.code === '23505') {
+      console.log('Duplicate category attempt:', req.body);
+      return res.status(400).json({ message: 'Category already exists' });
+    }
+    console.error('Error creating category:', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -38,16 +53,27 @@ router.put('/:id', auth, async (req, res) => {
   try {
     const { name } = req.body;
     const id = Number(req.params.id);
-    if (!name) return res.status(400).json({ message: 'Name required' });
+    console.log(`Updating category ${id} for user ${req.user.id} to name:`, name);
+
+    if (!name) {
+      console.log('No name provided for update');
+      return res.status(400).json({ message: 'Name required' });
+    }
 
     const q = await db.query(
       'UPDATE categories SET name = $1 WHERE id = $2 AND user_id = $3 RETURNING id, name, type, created_at',
       [name, id, req.user.id]
     );
-    if (!q.rows.length) return res.status(404).json({ message: 'Not found' });
+
+    if (!q.rows.length) {
+      console.log('Category not found for update:', id);
+      return res.status(404).json({ message: 'Not found' });
+    }
+
+    console.log('Category updated:', q.rows[0]);
     res.json(q.rows[0]);
   } catch (err) {
-    console.error(err);
+    console.error('Error updating category:', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -56,11 +82,22 @@ router.put('/:id', auth, async (req, res) => {
 router.delete('/:id', auth, async (req, res) => {
   try {
     const id = Number(req.params.id);
-    const q = await db.query('DELETE FROM categories WHERE id = $1 AND user_id = $2 RETURNING id', [id, req.user.id]);
-    if (!q.rows.length) return res.status(404).json({ message: 'Not found' });
+    console.log(`Deleting category ${id} for user ${req.user.id}`);
+
+    const q = await db.query(
+      'DELETE FROM categories WHERE id = $1 AND user_id = $2 RETURNING id',
+      [id, req.user.id]
+    );
+
+    if (!q.rows.length) {
+      console.log('Category not found for deletion:', id);
+      return res.status(404).json({ message: 'Not found' });
+    }
+
+    console.log('Category deleted:', id);
     res.json({ message: 'Deleted' });
   } catch (err) {
-    console.error(err);
+    console.error('Error deleting category:', err);
     res.status(500).json({ message: 'Server error' });
   }
 });

@@ -1,0 +1,287 @@
+<!-- dashboard.component.html -->
+<div class="dashboard-layout">
+  <!-- Mobile Menu Toggle -->
+  <button class="mobile-menu-toggle" (click)="toggleMobileMenu()">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <!-- Mobile Overlay -->
+  <div class="mobile-overlay" [class.active]="mobileMenuOpen" (click)="closeMobileMenu()"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.mobile-open]="mobileMenuOpen">
+    <div class="logo">
+      <div class="logo-icon"></div>
+      <span>uiffry</span>
+    </div>
+
+    <nav class="nav-menu">
+      <a class="nav-item active" routerLink="/dashboard">
+        <mat-icon>dashboard</mat-icon>
+        <span>Dashboard</span>
+      </a>
+      <a class="nav-item" routerLink="/analytics">
+        <mat-icon>analytics</mat-icon>
+        <span>Analytics</span>
+      </a>
+      <a class="nav-item" routerLink="/wallet">
+        <mat-icon>account_balance_wallet</mat-icon>
+        <span>My Wallet</span>
+      </a>
+      <a class="nav-item" routerLink="/accounts">
+        <mat-icon>person</mat-icon>
+        <span>Accounts</span>
+      </a>
+      <a class="nav-item" routerLink="/settings">
+        <mat-icon>settings</mat-icon>
+        <span>Settings</span>
+      </a>
+    </nav>
+
+    <div class="nav-bottom">
+      <a class="nav-item" routerLink="/security">
+        <mat-icon>security</mat-icon>
+        <span>Security</span>
+      </a>
+      <a class="nav-item" routerLink="/help">
+        <mat-icon>help</mat-icon>
+        <span>Help Centre</span>
+      </a>
+      <div class="dark-mode-toggle">
+        <mat-icon>dark_mode</mat-icon>
+        <span>Dark Mode</span>
+        <mat-slide-toggle color="primary" [checked]="true"></mat-slide-toggle>
+      </div>
+    </div>
+
+    <div class="user-profile">
+      <img src="https://i.pravatar.cc/150?img=12" alt="User" class="user-avatar">
+      <div class="user-info">
+        <div class="user-name">Ali Riaz</div>
+        <div class="user-role">Web Developer</div>
+      </div>
+      <mat-icon>expand_more</mat-icon>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Header -->
+    <header class="dashboard-header">
+      <div class="welcome-section">
+        <h1>Welcome Back, Ali 👋</h1>
+        <p>Here's what's happening with your store today.</p>
+      </div>
+      <div class="search-bar">
+        <mat-icon>search</mat-icon>
+        <input type="text" placeholder="Search for anything...">
+      </div>
+    </header>
+
+    <!-- Top Cards Row -->
+    <div class="top-cards">
+      <mat-card class="stat-card income-card">
+        <div class="stat-icon" style="background: rgba(34, 211, 238, 0.2);">
+          <mat-icon style="color: #22d3ee;">trending_down</mat-icon>
+        </div>
+        <div class="stat-content">
+          <div class="stat-label">Total Income</div>
+          <div class="stat-value">{{ formatCurrency(totalIncome) }}</div>
+          <div class="stat-change" [ngClass]="incomeChange >= 0 ? 'positive' : 'negative'">
+            {{ incomeChange >= 0 ? '+' : '' }}{{ incomeChange.toFixed(2) }}%
+          </div>
+        </div>
+      </mat-card>
+
+      <mat-card class="stat-card outcome-card">
+        <div class="stat-icon" style="background: rgba(99, 102, 241, 0.2);">
+          <mat-icon style="color: #6366f1;">trending_up</mat-icon>
+        </div>
+        <div class="stat-content">
+          <div class="stat-label">Total Outcome</div>
+          <div class="stat-value">{{ formatCurrency(totalOutcome) }}</div>
+          <div class="stat-change" [ngClass]="outcomeChange >= 0 ? 'positive' : 'negative'">
+            {{ outcomeChange >= 0 ? '+' : '' }}{{ outcomeChange.toFixed(2) }}%
+          </div>
+        </div>
+      </mat-card>
+
+      <mat-card class="my-card-section">
+        <div class="card-header-top">
+          <h3>My Card</h3>
+        </div>
+        <div class="card-balance-label">Card Balance</div>
+        <div class="card-balance-value">{{ formatCurrencyWithDecimals(cardBalance) }}</div>
+        
+        <div class="credit-card">
+          <div class="card-chip"></div>
+          <div class="card-number">5282 3456 7890 1289</div>
+          <div class="card-expiry">09/25</div>
+          <div class="card-logo">
+            <div class="mastercard-circle red"></div>
+            <div class="mastercard-circle yellow"></div>
+          </div>
+          <div class="current-balance-section">
+            <div class="current-label">Current Balance</div>
+            <div class="current-value">{{ formatCurrency(currentBalance) }}</div>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <button mat-raised-button class="manage-btn">Manage Cards</button>
+          <button mat-stroked-button class="transfer-btn" (click)="navigateToTransfer()">Transfer</button>
+        </div>
+      </mat-card>
+    </div>
+
+    <!-- Analytics and Activity Row -->
+    <div class="middle-row">
+      <!-- Analytics Chart -->
+      <mat-card class="analytics-card">
+        <div class="analytics-header">
+          <h3>Analytics</h3>
+          <div class="chart-controls">
+            <div class="chart-legend">
+              <label class="legend-item">
+                <input type="checkbox" [(ngModel)]="showIncomeChart">
+                <span class="legend-color income"></span>
+                <span>Income</span>
+              </label>
+              <label class="legend-item">
+                <input type="checkbox" [(ngModel)]="showOutcomeChart">
+                <span class="legend-color outcome"></span>
+                <span>Outcome</span>
+              </label>
+            </div>
+            <mat-form-field appearance="outline" class="year-select">
+              <mat-select [(value)]="selectedYear" (selectionChange)="onYearChange()">
+                <mat-option value="2022">2022</mat-option>
+                <mat-option value="2023">2023</mat-option>
+                <mat-option value="2024">2024</mat-option>
+                <mat-option value="2025">2025</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas #analyticsChart></canvas>
+        </div>
+      </mat-card>
+
+      <!-- Activity Card -->
+      <mat-card class="activity-card">
+        <div class="activity-header">
+          <h3>Activity</h3>
+          <mat-form-field appearance="outline" class="month-select">
+            <mat-select [(value)]="selectedMonth">
+              <mat-option value="Month">Month</mat-option>
+              <mat-option value="January">January</mat-option>
+              <mat-option value="February">February</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        
+        <div class="activity-chart">
+          <div class="donut-chart">
+            <svg viewBox="0 0 200 200" class="donut-svg">
+              <circle cx="100" cy="100" r="80" fill="none" stroke="#2d3250" stroke-width="30"></circle>
+              <circle cx="100" cy="100" r="80" fill="none" stroke="#6366f1" stroke-width="30"
+                stroke-dasharray="377" stroke-dashoffset="94.25" transform="rotate(-90 100 100)"></circle>
+              <circle cx="100" cy="100" r="80" fill="none" stroke="#22d3ee" stroke-width="30"
+                stroke-dasharray="377" stroke-dashoffset="283" transform="rotate(180 100 100)"></circle>
+            </svg>
+            <div class="donut-center">
+              <div class="percentage">{{ activityPercentage }}%</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="activity-legend">
+          <div class="activity-item">
+            <span class="activity-dot purple"></span>
+            <span class="activity-label">Daily payment</span>
+            <span class="activity-value">{{ dailyPaymentPercentage }}%</span>
+          </div>
+          <div class="activity-item">
+            <span class="activity-dot cyan"></span>
+            <span class="activity-label">Hobby</span>
+            <span class="activity-value">{{ hobbyPercentage }}%</span>
+          </div>
+        </div>
+
+        <button mat-button class="view-all-btn">
+          View all activity
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </mat-card>
+    </div>
+
+    <!-- Transaction Table -->
+    <mat-card class="transaction-card">
+      <div class="transaction-header">
+        <h3>Transaction</h3>
+        <div class="transaction-controls">
+          <div class="search-box">
+            <mat-icon>search</mat-icon>
+            <input type="text" placeholder="Search for anything...">
+          </div>
+          <mat-form-field appearance="outline" class="date-range-select">
+            <mat-icon matPrefix>calendar_today</mat-icon>
+            <mat-select [(value)]="dateRange">
+              <mat-option value="10 May - 20 May">10 May - 20 May</mat-option>
+              <mat-option value="1 May - 10 May">1 May - 10 May</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <table class="transaction-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Show real transactions from backend -->
+          <tr *ngFor="let tx of transactions.slice(0, 5)">
+            <td>
+              <div class="transaction-name">
+                <div class="transaction-icon" [ngClass]="tx.type">
+                  <mat-icon>{{ getTransactionIcon(tx) }}</mat-icon>
+                </div>
+                <span>{{ getTransactionName(tx) }}</span>
+              </div>
+            </td>
+            <td>{{ tx.occurred_at | date:'EEE, d MMM yyyy' }}</td>
+            <td>{{ formatCurrency(tx.amount) }}</td>
+            <td>
+              <span class="status-badge" [ngClass]="getStatusClass(tx.type)">
+                {{ tx.type | titlecase }}
+              </span>
+            </td>
+          </tr>
+          
+          <!-- Show message when no transactions -->
+          <tr *ngIf="transactions.length === 0 && !isLoading">
+            <td colspan="4" style="text-align: center; padding: 32px;">
+              <div style="color: #8b92b2;">
+                <mat-icon style="font-size: 48px; width: 48px; height: 48px; margin-bottom: 16px;">inbox</mat-icon>
+                <p>No transactions yet. Start by adding your first transaction!</p>
+              </div>
+            </td>
+          </tr>
+          
+          <!-- Loading state -->
+          <tr *ngIf="isLoading">
+            <td colspan="4" style="text-align: center; padding: 32px;">
+              <div style="color: #8b92b2;">Loading transactions...</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-card>
+  </main>
+</div>

@@ -1,0 +1,274 @@
+// transfer-success.component.scss
+.success-page {
+  min-height: 100vh;
+  background: #1a1d3a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.success-container {
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+}
+
+// Success Icon Animation
+.success-icon {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 32px;
+
+  .success-circle {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: scaleIn 0.5s ease-out;
+    position: relative;
+    z-index: 2;
+
+    mat-icon {
+      font-size: 60px;
+      width: 60px;
+      height: 60px;
+      color: #fff;
+    }
+  }
+
+  .success-ripple {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(34, 211, 238, 0.3);
+    animation: ripple 2s infinite;
+    z-index: 1;
+  }
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes ripple {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+}
+
+// Success Message
+.success-title {
+  font-size: 32px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 12px 0;
+  animation: fadeInUp 0.6s ease-out 0.2s backwards;
+
+  @media (max-width: 768px) {
+    font-size: 24px;
+  }
+}
+
+.success-message {
+  font-size: 16px;
+  color: #8b92b2;
+  margin: 0 0 32px 0;
+  animation: fadeInUp 0.6s ease-out 0.3s backwards;
+}
+
+@keyframes fadeInUp {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// Details Card
+.details-card {
+  background: #151832 !important;
+  border: 1px solid #1e2347;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  text-align: left;
+  animation: fadeInUp 0.6s ease-out 0.4s backwards;
+
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+
+    .label {
+      color: #8b92b2;
+      font-size: 14px;
+    }
+
+    .value {
+      color: #fff;
+      font-weight: 500;
+      text-align: right;
+
+      &.transaction-id {
+        font-family: monospace;
+        font-size: 13px;
+        color: #22d3ee;
+      }
+
+      &.amount {
+        font-size: 24px;
+        font-weight: 600;
+        color: #22d3ee;
+      }
+    }
+
+    &.amount-row {
+      padding: 16px 0;
+    }
+  }
+
+  .divider {
+    height: 1px;
+    background: #334155;
+    margin: 8px 0;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+
+    &.success {
+      background: rgba(34, 211, 238, 0.2);
+      color: #22d3ee;
+    }
+
+    mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
+// Action Buttons
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  animation: fadeInUp 0.6s ease-out 0.5s backwards;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+
+  .action-btn {
+    flex: 1;
+    border: 1px solid #334155 !important;
+    color: #fff !important;
+    background: transparent !important;
+    padding: 12px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    &:hover {
+      background: #1e2347 !important;
+      border-color: #6366f1 !important;
+    }
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+// Primary Actions
+.primary-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: fadeInUp 0.6s ease-out 0.6s backwards;
+
+  .primary-btn {
+    width: 100%;
+    background: #6366f1 !important;
+    color: #fff !important;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: 500;
+    font-size: 16px;
+
+    &:hover {
+      background: #7c3aed !important;
+    }
+  }
+
+  .secondary-btn {
+    width: 100%;
+    border: 1px solid #334155 !important;
+    color: #fff !important;
+    background: transparent !important;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: 500;
+
+    &:hover {
+      background: #1e2347 !important;
+      border-color: #6366f1 !important;
+    }
+  }
+
+  .text-btn {
+    color: #8b92b2 !important;
+    padding: 12px;
+
+    &:hover {
+      color: #fff !important;
+      background: transparent !important;
+    }
+  }
+}
+
+// Global Material Overrides
+::ng-deep {
+  .mat-mdc-card {
+    background: #151832 !important;
+    color: #fff !important;
+  }
+}

@@ -1,0 +1,300 @@
+<!-- transfer.component.html -->
+<div class="transfer-page">
+  <div class="transfer-container">
+    <!-- Header -->
+    <div class="transfer-header">
+      <button mat-icon-button (click)="cancel()" class="back-btn">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1>Transfer Money</h1>
+    </div>
+
+    <!-- Step Indicator -->
+    <div class="step-indicator">
+      <div class="step" [class.active]="currentStep === 0" [class.completed]="currentStep > 0">
+        <div class="step-circle">
+          <mat-icon *ngIf="currentStep > 0">check</mat-icon>
+          <span *ngIf="currentStep <= 0">1</span>
+        </div>
+        <span class="step-label">Details</span>
+      </div>
+      <div class="step-line" [class.active]="currentStep > 0"></div>
+      <div class="step" [class.active]="currentStep === 1">
+        <div class="step-circle">
+          <span>2</span>
+        </div>
+        <span class="step-label">Confirm</span>
+      </div>
+    </div>
+
+    <!-- Step 1: Transfer Details -->
+    <div *ngIf="currentStep === 0" class="transfer-step">
+      <form [formGroup]="transferForm">
+        <!-- From Account -->
+        <mat-card class="form-section">
+          <h3>From Account</h3>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Select Account</mat-label>
+            <mat-select formControlName="fromAccount">
+              <mat-option *ngFor="let account of accounts" [value]="account.id">
+                <div class="account-option">
+                  <div>
+                    <div class="account-type">{{ account.type }}</div>
+                    <div class="account-number">{{ account.account_number }}</div>
+                  </div>
+                  <div class="account-balance">{{ formatCurrency(account.balance) }}</div>
+                </div>
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="transferForm.get('fromAccount')?.hasError('required')">
+              Please select an account
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Selected Account Display -->
+          <div *ngIf="selectedAccount" class="selected-account">
+            <div class="account-info">
+              <mat-icon>account_balance</mat-icon>
+              <div>
+                <div class="account-name">{{ selectedAccount.type }} Account</div>
+                <div class="account-num">{{ selectedAccount.account_number }}</div>
+              </div>
+            </div>
+            <div class="account-bal">{{ formatCurrency(selectedAccount.balance) }}</div>
+          </div>
+        </mat-card>
+
+        <!-- Recent Recipients (Quick Access) -->
+        <div *ngIf="recentRecipients.length > 0" class="recent-recipients">
+          <h3>Recent Recipients</h3>
+          <div class="recipients-grid">
+            <div 
+              *ngFor="let recipient of recentRecipients" 
+              class="recipient-card"
+              (click)="selectRecipient(recipient)"
+              [class.selected]="selectedBeneficiary?.id === recipient.id">
+              <div class="recipient-avatar">
+                {{ recipient.name.charAt(0) }}
+              </div>
+              <div class="recipient-name">{{ recipient.nickname || recipient.name }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Transfer Type -->
+        <mat-card class="form-section">
+          <h3>Transfer To</h3>
+          <mat-radio-group formControlName="transferType" class="transfer-type-group">
+            <mat-radio-button value="own">My Account</mat-radio-button>
+            <mat-radio-button value="saved">Saved Beneficiary</mat-radio-button>
+            <mat-radio-button value="new">New Recipient</mat-radio-button>
+          </mat-radio-group>
+
+          <!-- Saved Beneficiary Selection -->
+          <div *ngIf="transferType === 'saved'" class="beneficiary-section">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Select Beneficiary</mat-label>
+              <mat-select formControlName="beneficiaryId">
+                <mat-option *ngFor="let beneficiary of beneficiaries" [value]="beneficiary.id">
+                  <div class="beneficiary-option">
+                    <div>
+                      <div class="beneficiary-name">{{ beneficiary.name }}</div>
+                      <div class="beneficiary-details">{{ beneficiary.account_number }} • {{ beneficiary.bank_name }}</div>
+                    </div>
+                  </div>
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!-- New Recipient Form -->
+          <div *ngIf="transferType === 'new'" class="new-recipient-section">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Recipient Name</mat-label>
+              <input matInput formControlName="recipientName" placeholder="Enter recipient name">
+              <mat-error *ngIf="transferForm.get('recipientName')?.hasError('required')">
+                Recipient name is required
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Account Number</mat-label>
+              <input matInput formControlName="recipientAccount" placeholder="Enter account number">
+              <mat-error *ngIf="transferForm.get('recipientAccount')?.hasError('required')">
+                Account number is required
+              </mat-error>
+              <mat-error *ngIf="transferForm.get('recipientAccount')?.hasError('pattern')">
+                Enter a valid account number (10-16 digits)
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Bank Name</mat-label>
+              <input matInput formControlName="recipientBank" placeholder="Enter bank name">
+              <mat-error *ngIf="transferForm.get('recipientBank')?.hasError('required')">
+                Bank name is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <!-- Own Account Transfer -->
+          <div *ngIf="transferType === 'own'" class="own-account-section">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>To Account</mat-label>
+              <mat-select formControlName="beneficiaryId">
+                <mat-option *ngFor="let account of accounts" [value]="account.id">
+                  {{ account.type }} - {{ account.account_number }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-card>
+
+        <!-- Amount -->
+        <mat-card class="form-section">
+          <h3>Amount & Details</h3>
+          <mat-form-field appearance="outline" class="full-width amount-field">
+            <mat-label>Amount</mat-label>
+            <span matPrefix>$&nbsp;</span>
+            <input matInput type="number" formControlName="amount" placeholder="0.00">
+            <mat-error *ngIf="transferForm.get('amount')?.hasError('required')">
+              Amount is required
+            </mat-error>
+            <mat-error *ngIf="transferForm.get('amount')?.hasError('min')">
+              Amount must be greater than 0
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Description (Optional)</mat-label>
+            <input matInput formControlName="description" placeholder="What's this for?">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Reference (Optional)</mat-label>
+            <input matInput formControlName="reference" placeholder="Reference number">
+          </mat-form-field>
+
+          <!-- Fee Summary -->
+          <div class="fee-summary" *ngIf="transferForm.get('amount')?.value > 0">
+            <div class="fee-row">
+              <span>Transfer Amount</span>
+              <span>{{ formatCurrency(transferForm.get('amount')?.value) }}</span>
+            </div>
+            <div class="fee-row">
+              <span>Transfer Fee</span>
+              <span>{{ formatCurrency(transferFee) }}</span>
+            </div>
+            <div class="fee-row total">
+              <span>Total</span>
+              <span>{{ formatCurrency(totalAmount) }}</span>
+            </div>
+          </div>
+        </mat-card>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <button mat-stroked-button type="button" (click)="cancel()" class="cancel-btn">
+            Cancel
+          </button>
+          <button 
+            mat-raised-button 
+            type="button" 
+            (click)="nextStep()" 
+            class="next-btn"
+            [disabled]="!transferForm.valid">
+            Continue
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Step 2: Confirmation -->
+    <div *ngIf="currentStep === 1" class="transfer-step">
+      <mat-card class="confirmation-card">
+        <h3>Confirm Transfer</h3>
+        
+        <!-- Transfer Summary -->
+        <div class="summary-section">
+          <div class="summary-row">
+            <span class="label">From</span>
+            <div class="value">
+              <div>{{ selectedAccount?.type }} Account</div>
+              <div class="sub-value">{{ selectedAccount?.account_number }}</div>
+            </div>
+          </div>
+
+          <div class="transfer-arrow">
+            <mat-icon>arrow_downward</mat-icon>
+          </div>
+
+          <div class="summary-row">
+            <span class="label">To</span>
+            <div class="value">
+              <div>{{ transferForm.get('recipientName')?.value }}</div>
+              <div class="sub-value">{{ transferForm.get('recipientAccount')?.value }}</div>
+            </div>
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <div class="summary-row amount-row">
+            <span class="label">Amount</span>
+            <span class="value amount">{{ formatCurrency(transferForm.get('amount')?.value) }}</span>
+          </div>
+
+          <div class="summary-row">
+            <span class="label">Fee</span>
+            <span class="value">{{ formatCurrency(transferFee) }}</span>
+          </div>
+
+          <div class="summary-row total-row">
+            <span class="label">Total</span>
+            <span class="value">{{ formatCurrency(totalAmount) }}</span>
+          </div>
+
+          <div *ngIf="transferForm.get('description')?.value" class="summary-row">
+            <span class="label">Description</span>
+            <span class="value">{{ transferForm.get('description')?.value }}</span>
+          </div>
+        </div>
+
+        <!-- PIN Entry -->
+        <form [formGroup]="confirmationForm" class="pin-section">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Enter PIN</mat-label>
+            <input 
+              matInput 
+              type="password" 
+              formControlName="pin" 
+              placeholder="Enter your 4-6 digit PIN"
+              maxlength="6">
+            <mat-icon matSuffix>lock</mat-icon>
+            <mat-error *ngIf="confirmationForm.get('pin')?.hasError('required')">
+              PIN is required
+            </mat-error>
+            <mat-error *ngIf="confirmationForm.get('pin')?.hasError('pattern')">
+              Enter a valid 4-6 digit PIN
+            </mat-error>
+          </mat-form-field>
+        </form>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <button mat-stroked-button type="button" (click)="previousStep()" class="back-btn-action">
+            Back
+          </button>
+          <button 
+            mat-raised-button 
+            type="button" 
+            (click)="onSubmit()" 
+            class="confirm-btn"
+            [disabled]="!confirmationForm.valid || isLoading">
+            <span *ngIf="!isLoading">Confirm Transfer</span>
+            <span *ngIf="isLoading">Processing...</span>
+          </button>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>

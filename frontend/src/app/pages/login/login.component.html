@@ -1,0 +1,88 @@
+<!-- login.component.html -->
+<div class="login-page">
+  <div class="login-wrapper">
+    <!-- Avatar Icon -->
+    <div class="avatar-container">
+      <div class="avatar">
+        <mat-icon>lock</mat-icon>
+      </div>
+    </div>
+
+    <!-- Sign In Card -->
+    <mat-card class="login-card">
+      <mat-card-content>
+        <h1 class="title">Sign in</h1>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+          <!-- Email Input -->
+          <div class="form-field">
+            <label class="field-label">Email or mobile phone number</label>
+            <mat-form-field appearance="outline" class="full-width">
+              <input matInput type="text" formControlName="email" placeholder="Enter your email">
+              <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+                Email is required
+              </mat-error>
+              <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
+                Enter a valid email
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <!-- Password Input -->
+          <div class="form-field">
+            <label class="field-label">Your password</label>
+            <mat-form-field appearance="outline" class="full-width">
+              <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" placeholder="Enter your password">
+              <button mat-icon-button matSuffix type="button" (click)="togglePasswordVisibility()" class="hide-btn">
+                <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+              <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+                Password is required
+              </mat-error>
+              <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">
+                Minimum 6 characters required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <!-- Error Message -->
+          <div class="error-message" *ngIf="loginError">
+            {{ loginError }}
+          </div>
+
+          <!-- Log In Button -->
+          <button mat-raised-button class="login-btn" type="submit" [disabled]="loginForm.invalid">
+            Log in
+          </button>
+
+          <!-- Terms -->
+          <p class="terms-text">
+            By continuing, you agree to the <a href="#">Terms of use</a> and <a href="#">Privacy Policy</a>.
+          </p>
+
+          <!-- Links -->
+          <div class="links-container">
+            <a href="#" class="link">Other issue with sign in</a>
+            <a routerLink="/forgot-password" class="link">Forgot your password?</a>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Create Account Section -->
+    <div class="create-account-section">
+      <p class="new-user-text">New to our community</p>
+      <button mat-stroked-button class="create-account-btn" (click)="navigateToRegister()">
+        Create an account
+      </button>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <a href="#" class="footer-link">Help Center</a>
+      <a href="#" class="footer-link">Terms of Service</a>
+      <a href="#" class="footer-link">Privacy Policy</a>
+      <span class="footer-text">@2025 Finance Tracker</span>
+    </div>
+  </div>
+</div>

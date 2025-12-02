@@ -1,0 +1,280 @@
+/* login.component.scss */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1a1d3a;
+  padding: 20px;
+}
+
+.login-wrapper {
+  width: 100%;
+  max-width: 500px;
+}
+
+.avatar-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.avatar {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  mat-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+    color: #fff;
+  }
+}
+
+.login-card {
+  background: #151832 !important;
+  border: 1px solid #1e2347;
+  border-radius: 16px;
+  box-shadow: none !important;
+  padding: 16px;
+  
+  ::ng-deep .mat-mdc-card-content {
+    padding: 16px;
+  }
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 400;
+  text-align: center;
+  margin: 0 0 32px 0;
+  color: #fff;
+}
+
+.form-field {
+  margin-bottom: 24px;
+}
+
+.field-label {
+  display: block;
+  font-size: 14px;
+  color: #8b92b2;
+  margin-bottom: 8px;
+}
+
+.full-width {
+  width: 100%;
+  
+  ::ng-deep {
+    .mat-mdc-text-field-wrapper {
+      background: #1a1d3a;
+    }
+
+    .mat-mdc-form-field-subscript-wrapper {
+      display: none;
+    }
+
+    .mat-mdc-text-field-wrapper {
+      padding: 0;
+    }
+
+    .mat-mdc-form-field-infix {
+      padding: 12px 14px;
+      min-height: auto;
+    }
+
+    .mat-mdc-input-element {
+      color: #fff;
+    }
+
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: #334155;
+    }
+
+    .mat-mdc-form-field:hover .mdc-notched-outline__leading,
+    .mat-mdc-form-field:hover .mdc-notched-outline__notch,
+    .mat-mdc-form-field:hover .mdc-notched-outline__trailing {
+      border-color: #475569;
+    }
+
+    .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+    .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+    .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+      border-color: #6366f1;
+      border-width: 1px;
+    }
+
+    // Error state
+    .mat-mdc-form-field.mat-form-field-invalid {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: #ef4444;
+      }
+    }
+
+    .mat-mdc-form-field-error {
+      color: #ef4444;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+  }
+}
+
+.hide-btn {
+  color: #8b92b2;
+  
+  .hide-text {
+    font-size: 12px;
+  }
+
+  &:hover {
+    color: #fff;
+  }
+}
+
+.login-btn {
+  width: 100%;
+  background: #6366f1 !important;
+  color: #fff !important;
+  font-weight: 500;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 16px;
+  margin-bottom: 16px;
+  box-shadow: none;
+  border: none;
+
+  &:hover:not(:disabled) {
+    background: #7c3aed !important;
+  }
+
+  &:disabled {
+    background: #334155 !important;
+    color: #64748b !important;
+    cursor: not-allowed;
+  }
+
+  ::ng-deep .mat-mdc-button-persistent-ripple {
+    border-radius: 12px;
+  }
+}
+
+.terms-text {
+  font-size: 12px;
+  text-align: center;
+  color: #8b92b2;
+  margin: 0 0 24px 0;
+  line-height: 1.5;
+
+  a {
+    color: #6366f1;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.links-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.link {
+  font-size: 14px;
+  color: #8b92b2;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+}
+
+.create-account-section {
+  margin-top: 24px;
+}
+
+.new-user-text {
+  text-align: center;
+  font-size: 14px;
+  color: #8b92b2;
+  margin: 0 0 12px 0;
+}
+
+.create-account-btn {
+  width: 100%;
+  border: 1px solid #334155 !important;
+  background: transparent !important;
+  color: #fff !important;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 400;
+
+  &:hover {
+    background: #1e2347 !important;
+    border-color: #475569 !important;
+  }
+
+  ::ng-deep .mat-mdc-button-persistent-ripple {
+    border-radius: 12px;
+  }
+}
+
+.footer {
+  margin-top: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.footer-link {
+  color: #8b92b2;
+  text-decoration: none;
+
+  &:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+}
+
+.footer-text {
+  color: #64748b;
+}
+
+// Error message styling
+.error-message {
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 8px;
+  text-align: center;
+  padding: 8px;
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+// Global Material overrides for login page
+::ng-deep {
+  .mat-mdc-card {
+    background: #151832 !important;
+    color: #fff !important;
+  }
+}

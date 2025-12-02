@@ -1,0 +1,86 @@
+<!-- transfer-success.component.html -->
+<div class="success-page">
+  <div class="success-container">
+    <!-- Success Icon Animation -->
+    <div class="success-icon">
+      <div class="success-circle">
+        <mat-icon>check</mat-icon>
+      </div>
+      <div class="success-ripple"></div>
+    </div>
+
+    <!-- Success Message -->
+    <h1 class="success-title">Transfer Successful!</h1>
+    <p class="success-message">Your money has been transferred successfully</p>
+
+    <!-- Transfer Details Card -->
+    <mat-card class="details-card" *ngIf="transferDetails">
+      <div class="detail-row">
+        <span class="label">Transaction ID</span>
+        <span class="value transaction-id">{{ transferDetails.transactionId }}</span>
+      </div>
+
+      <div class="detail-row amount-row">
+        <span class="label">Amount</span>
+        <span class="value amount">{{ formatCurrency(transferDetails.amount) }}</span>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="detail-row">
+        <span class="label">Recipient</span>
+        <span class="value">{{ transferDetails.recipient }}</span>
+      </div>
+
+      <div class="detail-row" *ngIf="transferDetails.recipientAccount !== 'N/A'">
+        <span class="label">Account Number</span>
+        <span class="value">{{ transferDetails.recipientAccount }}</span>
+      </div>
+
+      <div class="detail-row" *ngIf="transferDetails.reference !== 'N/A'">
+        <span class="label">Reference</span>
+        <span class="value">{{ transferDetails.reference }}</span>
+      </div>
+
+      <div class="detail-row">
+        <span class="label">Date & Time</span>
+        <span class="value">{{ formatDate(transferDetails.date) }}</span>
+      </div>
+
+      <div class="detail-row">
+        <span class="label">Status</span>
+        <span class="value status">
+          <span class="status-badge success">
+            <mat-icon>check_circle</mat-icon>
+            {{ transferDetails.status }}
+          </span>
+        </span>
+      </div>
+    </mat-card>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button mat-stroked-button class="action-btn" (click)="downloadReceipt()">
+        <mat-icon>download</mat-icon>
+        Download Receipt
+      </button>
+      <button mat-stroked-button class="action-btn" (click)="shareReceipt()">
+        <mat-icon>share</mat-icon>
+        Share
+      </button>
+    </div>
+
+    <!-- Primary Actions -->
+    <div class="primary-actions">
+      <button mat-raised-button class="primary-btn" (click)="goToDashboard()">
+        Go to Dashboard
+      </button>
+      <button mat-stroked-button class="secondary-btn" (click)="makeAnotherTransfer()">
+        Make Another Transfer
+      </button>
+      <button mat-button class="text-btn" (click)="viewTransactions()">
+        View All Transactions
+      </button>
+    </div>
+  </div>
+</div>
